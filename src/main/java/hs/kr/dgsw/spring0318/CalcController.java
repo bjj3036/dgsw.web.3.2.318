@@ -16,7 +16,7 @@ public class CalcController {
     //op: Operator
     //lv: Last Value
     @GetMapping("/calc")
-    public String calc(@RequestParam int fv, @RequestParam String op, @RequestParam int lv){
+    public String calc(@RequestParam double fv, @RequestParam String op, @RequestParam double lv){
         return cs.calculate(fv, op ,lv);
     }
 }

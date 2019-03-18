@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 public class CalculatorServiceImpl implements CalculatorService {
 
     @Override
-    public String calculate(int fv, String op, int lv) {
+    public String calculate(double fv, String op, double lv) {
         double result = 0;
         switch (op){
             case "+":
@@ -19,7 +19,7 @@ public class CalculatorServiceImpl implements CalculatorService {
                 result = fv * lv;
                 break;
             case "/":
-                result = (double)fv / lv;
+                result = fv / lv;
                 break;
         }
         return Double.toString(result);
