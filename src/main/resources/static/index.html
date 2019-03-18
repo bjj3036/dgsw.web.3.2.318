@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<section>
+    <h1>Call with AJAX</h1>
+    <div>
+        <input id="name" placeholder="이름 입력">
+        <button onclick="send2()">확인</button>
+        <div id="display-response"></div>
+    </div>
+</section>
+<script>
+    function send1() {
+        let name = $('#name').val().trim()
+        if (!name || name === '') {
+            $('#display-response').html('입력하세요')
+            return;
+        }
+
+        $.get('/greeting/' + name)
+            .done(data => {
+                $('#display-response').html(JSON.stringify(data))
+            })
+            .fail(err =>
+                $('#display-response').html(JSON.stringify(err))
+            )
+            .always(() => {
+                $('#display-response').html(
+                    $('#display-response').html() + '<br>이 부분은 항상 실행됨')
+            })
+
+    }
+
+    async function send2() {
+        let name = $('#name').val().trim()
+        if (!name || name === '') {
+            $('#display-response').html('입력하세요')
+            return;
+        }
+        try {
+            let response = await $.get('/greeting/' + name)
+            $('#display-response').html(JSON.stringify(response))
+        } catch (err) {
+            $('#display-response').html(JSON.stringify(err))
+        } finally {
+            $('#display-response').html(
+                $('#display-response').html() + '<br>이 부분은 항상 실행됨')
+        }
+        // .done(function(data){
+        //     $('#display-response').html(JSON.stringify(data))
+        // })
+        // .fail(function(err){
+        //     $('#display-response').html(JSON.stringify(err))
+        // })
+        // .always(function(){
+        // })
+
+    }
+
+    function send() {
+        let name = $('#name').val().trim()
+        if (!name || name === '') {
+            $('#display-response').html('입력하세요')
+            return;
+        }
+        $.ajax({
+            url: '/greeting/' + name,
+            type: 'GET',
+            async: true,
+            success: function (data) {
+                $('#display-response').html(JSON.stringify(data))
+            },
+            error: function (err) {
+                $('#display-response').html(JSON.stringify(err))
+            }
+        })
+    }
+</script>
+</body>
+</html>

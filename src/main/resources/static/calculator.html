@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div>
+    <input type="number" id="fv">
+    <input type="number" id="lv">
+    <br/>
+    +<input type="radio" value="+" name="op" checked>
+    -<input type="radio" value="-" name="op">
+    *<input type="radio" value="*" name="op">
+    /<input type="radio" value="/" name="op">
+    <button onclick="send()">결과 확인</button>
+    <div>
+        <strong>결과: </strong>
+        <p id="resultBox"></p>
+    </div>
+</div>
+<script>
+    function send() {
+        let fv = $('#fv').val().trim()
+            , lv = $('#lv').val().trim()
+        let inputs = $('[name="op"]') //radio 버튼 다 불러오기
+        let op //선택된 연산자 저장
+        let url
+
+        if (!fv || !lv)//숫자 둘 다 입력했는지 확인
+            return
+
+
+        for (idx in inputs) { //inputs가 배열이 아닌 json
+            if (!inputs[idx].checked)
+                continue
+            else {
+                op = $(inputs[idx]).val()
+                break
+            }
+        }
+
+        op = op == '+' ? '%2B' : op //+는 %2B로 바꿔주기
+
+        url = `/calc?fv=${fv}&op=${op}&lv=${lv}`
+
+        //비동기 ajax 통신
+        $.get(url)
+            .done(data => {
+                $('#resultBox').html(JSON.stringify(data))
+            })
+            .fail(err =>
+                $('#resultBox').html(JSON.stringify(err))
+            )
+            .always(() => {
+                $('#resultBox').html(
+                    $('#resultBox').html() + '입니다')
+            })
+    }
+</script>
+</body>
+</html>
